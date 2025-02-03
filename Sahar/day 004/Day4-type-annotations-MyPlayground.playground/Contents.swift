@@ -1,6 +1,6 @@
 import Cocoa
 
-// type annotations (swift is type safe)
+// type annotations - explicitly defining a type (swift is type safe)
 
 
 //swift knows the type is a string because we initialized the variable with a string. but we can explicityly say the type too
@@ -53,6 +53,8 @@ print(username)
 
 /*
 now let's say we were to add another name for the username
+ 
 username = "taylor swift"
+ 
 you get an error that says it's not allowed because username is a constant and it can be initilized once only!
 */

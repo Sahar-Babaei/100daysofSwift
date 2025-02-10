@@ -1,72 +1,84 @@
 import Cocoa
 
-// sqrt() is from Cocoa ^^ which is imported up here
+// when we wanna return multiple values from a function
 
 
-//this function returns something so we can have a constant store the value it returns like this
-let root = sqrt(169)
-print(root)
-
-
-// --> Steps for making our own function that returns things
-// step 1: write an arrow "->" before function's opening "{" telling it the type of data you're planning to return
-// step 2: use the "return" keyword inside the function's body to return the value/data
-
-// ex:
-func rollDice() -> Int { // this function sends back and integer
-    return Int.random(in:1...6)
-    //^^ it will return a random value between 1 and 6 just like a 6sided dice.
+// --> we could use an array. but it's not great.
+func getUser() -> [String]{
+    return ["John", "Doe"]
 }
-let result = rollDice()
-print(result)
+
+let user = getUser()
+print("name: \(user[0]) \(user[1])")
 
 
-// ex: do two strings containt he same letters, regardless of their order?
-// accept 2 strings as parameters
-// return true if their letters are the same
-// tip: call sorted() on a string to get its letters in alphabetical order
-func containSameLetter (string1 : String, string2: String) -> Bool {
-    if string1.sorted() == string2.sorted(){
-        return true
-    }
-    else{
-        return false
-    }
+// --> or we could use a dictionary. but it's messy and confusing.
+func getUser2() -> [String: String]{
+    return ["name": "John", "surname": "Doe"]
 }
-print(containSameLetter(string1: "sahar", string2: "sarah"))
-
-//option: second solution
-
- func containSameLetter2 (string1 : String, string2: String) -> Bool {
-     //   return string1.sorted() == string2.sorted()
-     
-     // note: when a function has one line of code which returns a value.
-     // you can remove the "return" keywork like this:
-     string1.sorted() == string2.sorted()
-     
- }
+let user2 = getUser2()
+print("name: \(user2["name", default: "name-unknown"]) \(user2["surname", default: "surname-unknown"])")
 
 
-
-//ex: a pythagoras function
-func pythagoras (a: Double, b: Double) -> Double{
-    let input = a*a + b*b
-    let root = sqrt(input)
-    return root
+// MARK: - Best solution: tuples
+//Solution?
+// tuples
+func getUser3() -> (firstName : String, lastName: String){
+    return (firstName : "taylor" , lastName : "swift")
 }
-let c = pythagoras(a: 3, b: 4)
-print (c)
 
-// if i were to write it as a 1 line return:
-func pythagoras2 (a: Double, b: Double) -> Double{
-    sqrt(a*a + b*b)
+let user3 = getUser3()
+print("name: \(user3.firstName) \(user3.lastName)")
+// TODO: Mentor??? does the "." work for tupples only or can i use it to access any type of parameter from a function. so far i'm only familiar with "." working for objects of a class.
+
+
+// tuples are not dictionaries where the keys are arbitrary strings. but they have full names like variable!
+
+
+//MARK: - about tupples (vs dictionaries)
+/*
+ - with dictionaries, swift can't know ahead of time if dictionary keys are present. so you have to always provide defaults
+ - when you use tuples, swift knows it'll be there. no need for defaults
+ - you can call the "." thing where you say "user.firstName". this prevents typos because firstName is a value, not a string.
+ - dictionaries can contain millions of values. with tuples you define how many items in the tuple and that's it.
+ */
+
+// MARK: 3 other differences:
+
+// 1 -> if you're returning a tuple from a function. swift knows the names of the values so you don't have to repeat them when u call return.
+
+func getUser4 () -> (name: String , surName: String){
+    ("Sahar","babaei") // <---- like this
 }
-print(pythagoras2(a: 3, b: 4))
+let user4 = getUser4()
+print("name : \(user4.name) \(user4.1)")
 
 
+// 2 -> sometimes you're given tuples but they don't have names! in that case you read them using index like arrays. starting from 0. (This also works for tuples that have names!)
 
-// Note: if your function doesn't return a value, you can still use the keyword "return" in the body to force the function to exit immediately.
-// ex: u wanna check if the input matches what u expected. if it doesn't, you exit immediately.
-func sayHello(){
-    return
+func getUser5 () -> (String,String){ // <---- like this
+    ("sirius","black")
 }
+let user5 = getUser5()
+print("name : \(user5.0) \(user5.1)")// <---- like this
+
+
+// 3 -> if a function returns a tuple. u can pull out the tuple
+
+func getUser6() -> (firstName : String, lastName: String){
+    return (firstName : "harry" , lastName : "potter")
+}
+
+//method 1:
+let user6 = getUser6()
+let u6firstname = user6.firstName //<---- like this
+let u6lastname = user6.lastName  //<---- like this
+print("name: \(u6firstname) \(u6lastname)")
+
+//method 2:
+let (name , surname) = getUser6()  //<---- like this *******
+print("name: \(name) \(surname)")
+
+//method 2.5: if u only need one part of the tuple:
+let (firstName , _) = getUser6()  //<---- like this you put a _ for the parts you don't wanna get
+print("name: \(name) ")
